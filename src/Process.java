@@ -22,6 +22,18 @@ public class Process {
         finishedRunningAt = -1;
     }
 
+    public String toString() {
+        String str = "[Process " + pid + "]: ";
+        str += "burstTime=" + burstTime + ", ";
+        str += "arrivalTime=" + arrivalTime + ", ";
+        str += "priority=" + priority + ", ";
+        str += "startedRunningAt=" + startedRunningAt + ", ";
+        str += "finishedRunningAt=" + finishedRunningAt + ", ";
+        str += "waitingTime=" + waitingTime() + ", ";
+        str += "responseTime=" + responseTime();
+        return str;
+    }
+
     public int waitingTime() {
         //returns the total time spent in the ready queue
 
