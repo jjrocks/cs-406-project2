@@ -3,14 +3,15 @@
  */
 public class Process {
     // Each process has a pid, burst_time, arrival_time, and a priority
-    int pid;
-    int burstTime;
-    int arrivalTime;
-    int priority;
+    private int pid;
+    private int burstTime;
+    private int arrivalTime;
+    private int priority;
 
 
-    int startedRunningAt; //record the first timestep that this process was running
-    int finishedRunningAt; //record the last timestep that this process was running
+    private int startedRunningAt; //record the first timestep that this process was running
+    private int finishedRunningAt; //record the last timestep that this process was running
+    private int runTimeSoFar; //record how much time this process has been allowed to run so far
 
     public Process(int pid, int burstTime, int arrivalTime, int priority) {
         this.pid = pid;
@@ -20,6 +21,7 @@ public class Process {
 
         startedRunningAt = -1;
         finishedRunningAt = -1;
+        runTimeSoFar = 0;
     }
 
     public String toString() {
@@ -29,9 +31,66 @@ public class Process {
         str += "priority=" + priority + ", ";
         str += "startedRunningAt=" + startedRunningAt + ", ";
         str += "finishedRunningAt=" + finishedRunningAt + ", ";
+        str += "runTimeSoFar=" + runTimeSoFar + ", ";
         str += "waitingTime=" + waitingTime() + ", ";
-        str += "responseTime=" + responseTime();
+        str += "responseTime=" + responseTime() + ", ";
+        str += "remainingTime=" + remainingTime();
         return str;
+    }
+
+    public void ageProcess() {
+        //increase the priority of a process (due to aging)
+        priority++;
+    }
+
+    public boolean runProcess(int curTimestep) {
+        //simulate running the process for one timestep. return true if the process is now
+        //finished, false if the process is no longer finished
+
+        if(startedRunningAt == -1) {
+            //if this is the first time this process was run, record the timestep
+            startedRunningAt = curTimestep;
+        }
+
+        runTimeSoFar++;
+
+        if(remainingTime() == 0) {
+            //if the process is finished, record the timestep
+            finishedRunningAt = curTimestep;
+            return true;
+        }
+
+        return false; //process still needs more running time
+    }
+
+    //Getters
+
+    public int pid() {
+        return pid;
+    }
+
+    public int burstTime() {
+        return burstTime;
+    }
+
+    public int arrivalTime() {
+        return arrivalTime;
+    }
+
+    public int priority() {
+        return priority;
+    }
+
+    public int startedRunningAt() {
+        return startedRunningAt;
+    }
+
+    public int finishedRunningAt() {
+        return finishedRunningAt;
+    }
+
+    public int runTimeSoFar() {
+        return runTimeSoFar;
     }
 
     public int waitingTime() {
@@ -63,6 +122,11 @@ public class Process {
             //if the process hasn't started running yet, we can't return the response time
             return -1;
         }
+    }
+
+    public int remainingTime() {
+        //returns how much more time this process needs to run
+        return burstTime - runTimeSoFar;
     }
 
 }

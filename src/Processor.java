@@ -28,18 +28,33 @@ public class Processor {
 			arrivalQueue.add(process);
 		}
 
+		//get the appropriate scheduler
+		Scheduler sched = new Fcfs(); //for now it's hardcoded as fcfs
+ 
 		//main program loop
 		int curTimestep=0;
-		while(arrivalQueue.size() != 0 /*and other stuff to be added*/) {
-			System.out.println("TIMESTEP="+curTimestep);
+		while(!arrivalQueue.isEmpty() || !sched.queueEmpty()){
 
-			//while there are processes in the queue that arrive this timestep
-			while(arrivalQueue.size() != 0 && arrivalQueue.peek().arrivalTime() == curTimestep) {
-				System.out.println("Process " + arrivalQueue.poll().pid() + " has arrived.");
+			//while there are processes in the queue that arrive this timestep, add them to the scheduler
+			while(!arrivalQueue.isEmpty() && arrivalQueue.peek().arrivalTime() == curTimestep) {
+				sched.addProcess(arrivalQueue.poll());
+			}
+
+			//find out which process to run
+			Process processToRun = sched.getProcessToRun();
+			if(processToRun != null) {
+				processToRun.runProcess(curTimestep);
+				System.out.println("Time: " + curTimestep + ", process " + processToRun.pid() + " running");
 			}
 
 			curTimestep++;
 		}
+
+		//print analysis
+		System.out.println("Average waiting time is: " + Analyzer.averageWaitingTime(processList));
+		System.out.println("Average weighted waiting time is: " + Analyzer.weightedAverageWaitingTime(processList));
+		System.out.println("Average response time is: " + Analyzer.averageResponseTime(processList));
+		System.out.println("Average weighted response time is: " + Analyzer.weightedAverageResponseTime(processList));
 	}
 
 }
