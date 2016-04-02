@@ -11,6 +11,7 @@ public class Process {
 
     private int startedRunningAt; //record the first timestep that this process was running
     private int finishedRunningAt; //record the last timestep that this process was running
+    private int lastRunAt; //the last timestep that this process was run
     private int runTimeSoFar; //record how much time this process has been allowed to run so far
 
     public Process(int pid, int burstTime, int arrivalTime, int priority) {
@@ -31,6 +32,7 @@ public class Process {
         str += "priority=" + priority + ", ";
         str += "startedRunningAt=" + startedRunningAt + ", ";
         str += "finishedRunningAt=" + finishedRunningAt + ", ";
+        str += "lastRunAt=" + lastRunAt + ", ";
         str += "runTimeSoFar=" + runTimeSoFar + ", ";
         str += "waitingTime=" + waitingTime() + ", ";
         str += "responseTime=" + responseTime() + ", ";
@@ -38,9 +40,9 @@ public class Process {
         return str;
     }
 
-    public void ageProcess() {
+    public void ageProcess(int amount) {
         //increase the priority of a process (due to aging)
-        priority++;
+        priority += amount;
     }
 
     public boolean runProcess(int curTimestep) {
@@ -53,6 +55,7 @@ public class Process {
         }
 
         runTimeSoFar++;
+        lastRunAt = curTimestep;
 
         if(remainingTime() == 0) {
             //if the process is finished, record the timestep
@@ -87,6 +90,10 @@ public class Process {
 
     public int finishedRunningAt() {
         return finishedRunningAt;
+    }
+
+    public int lastRunAt() {
+        return lastRunAt;
     }
 
     public int runTimeSoFar() {

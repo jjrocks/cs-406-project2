@@ -33,7 +33,7 @@ public class Processor {
  
 		//main program loop
 		int curTimestep=0;
-		while(!arrivalQueue.isEmpty() || !sched.queueEmpty()){
+		while(!arrivalQueue.isEmpty() || !sched.noProcesses()){
 
 			//while there are processes in the queue that arrive this timestep, add them to the scheduler
 			while(!arrivalQueue.isEmpty() && arrivalQueue.peek().arrivalTime() == curTimestep) {

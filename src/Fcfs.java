@@ -25,7 +25,7 @@ public class Fcfs implements Scheduler {
 		return processToRun;
 	} 
 
-	public boolean queueEmpty() {
+	public boolean noProcesses) {
 		return readyQueue.isEmpty();
 	}
 }
