@@ -14,6 +14,11 @@ public class Process {
     private int lastRunAt; //the last timestep that this process was run
     private int runTimeSoFar; //record how much time this process has been allowed to run so far
 
+    private int originalPriority; //tracks original priority before aging
+    public int agingCounter; //this is for optional usage, basically just in case you need to keep
+                             //track of any info for aging purposes (ie if you only wanted to age
+                             //once for every 3 timesteps waited and you needed a coutner for that)
+
     public Process(int pid, int burstTime, int arrivalTime, int priority) {
         this.pid = pid;
         this.burstTime = burstTime;
@@ -22,7 +27,9 @@ public class Process {
 
         startedRunningAt = -1;
         finishedRunningAt = -1;
+        lastRunAt = -1;
         runTimeSoFar = 0;
+        originalPriority = priority;
     }
 
     public String toString() {
@@ -30,6 +37,7 @@ public class Process {
         str += "burstTime=" + burstTime + ", ";
         str += "arrivalTime=" + arrivalTime + ", ";
         str += "priority=" + priority + ", ";
+        str += "originalPriority=" + originalPriority + ", ";
         str += "startedRunningAt=" + startedRunningAt + ", ";
         str += "finishedRunningAt=" + finishedRunningAt + ", ";
         str += "lastRunAt=" + lastRunAt + ", ";
@@ -98,6 +106,10 @@ public class Process {
 
     public int runTimeSoFar() {
         return runTimeSoFar;
+    }
+
+    public int originalPriority() {
+        return originalPriority;
     }
 
     public int waitingTime() {

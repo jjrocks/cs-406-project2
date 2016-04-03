@@ -25,11 +25,12 @@ public class Processor {
 		//create a queue that will automatically sort the processes by arrival time
 		PriorityQueue<Process> arrivalQueue = new PriorityQueue<Process>(processList.size(), new ArrivalTimeComparator());
 		for(Process process : processList) {
+			process.agingCounter = 0;
 			arrivalQueue.add(process);
 		}
 
 		//get the appropriate scheduler
-		Scheduler sched = new Fcfs(); //for now it's hardcoded as fcfs
+		Scheduler sched = new Nonpreprior(); //for now it's hardcoded as fcfs
  
 		//main program loop
 		int curTimestep=0;

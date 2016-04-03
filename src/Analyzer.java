@@ -16,8 +16,8 @@ public class Analyzer {
 		double numerator = 0;
 		double denominator = 0;
 		for(Process process : processList) {
-			numerator += process.waitingTime()*process.priority();
-			denominator += process.priority();
+			numerator += process.waitingTime()*process.originalPriority();
+			denominator += process.originalPriority();
 		}
 		return numerator / denominator;
 	}
@@ -36,8 +36,8 @@ public class Analyzer {
 		double numerator = 0;
 		double denominator = 0;
 		for(Process process : processList) {
-			numerator += process.responseTime()*process.priority();
-			denominator += process.priority();
+			numerator += process.responseTime()*process.originalPriority();
+			denominator += process.originalPriority();
 		}
 		return numerator / denominator;
 	}
