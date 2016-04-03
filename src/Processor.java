@@ -1,26 +1,56 @@
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.TreeMap;
 
 public class Processor {
 
 	public static void main(String[] args) {
 
+		//here's where all the scheduler types are defined
+		TreeMap<String, Scheduler> schedulerStrats = new TreeMap<String, Scheduler>();
+		schedulerStrats.put("fcfs", new Fcfs());
+		schedulerStrats.put("nonpreprior", new Nonpreprior());
+		schedulerStrats.put("rr", new RoundRobin());
+        schedulerStrats.put("sjf", new ShortestJobFirst());
+        schedulerStrats.put("preprior", new PremptivePriority());
+        schedulerStrats.put("srtf", new ShortestRemainingTimeFirst());
+
+
 		//check for correct input
 		if(args.length == 1 && args[0].equals("list"))
 		{
-			System.out.println("\nNo schedulers are implemented yet!\n");
+			//handle "list" command
+			System.out.println("\nHere are the available commands for selecting a scheduling algorithm:\n");
+			for(String str : schedulerStrats.keySet()) {
+				System.out.println(str);
+			}
+			System.out.println("");
 			return;
 		}
 		else if(args.length != 2) {
+			//make sure there are two arguments
 			System.out.println("\nThis program takes two parameters: the first parameter is " + 
 				"which scheduler to use and the second parameter is the input file name.");
-			System.out.println("\nAlternatively, you can enter the world \"list\" as a " + 
+			System.out.println("\nAlternatively, you can enter the word \"list\" as a " + 
+				"single parameter to list all available scheduling algorithms.\n");
+			return;
+		}
+		else if(!schedulerStrats.containsKey(args[0])) {
+			//make sure it's a valid scheduling algorithm
+			System.out.println("\nSorry, but \"" + args[0] + "\" is not not a valid scheduling algorithm.");
+			System.out.println("\nEnter the word \"list\" as a " + 
 				"single parameter to list all available scheduling algorithms.\n");
 			return;
 		}
 
+
 		//parse the input file
 		ArrayList<Process> processList = TextReader.parseText(args[1]);
+		if(processList == null || processList.size() == 0)
+		{
+			System.out.println("Unable to load processes.");
+			return;
+		}
 
 		//create a queue that will automatically sort the processes by arrival time
 		PriorityQueue<Process> arrivalQueue = new PriorityQueue<Process>(processList.size(), new ArrivalTimeComparator());
@@ -30,7 +60,7 @@ public class Processor {
 		}
 
 		//get the appropriate scheduler
-		Scheduler sched = new PremptivePriority(); //for now it's hardcoded as fcfs
+		Scheduler sched = schedulerStrats.get(args[0]);
  
 		//main program loop
 		int curTimestep=0;
