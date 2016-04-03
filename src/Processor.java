@@ -14,6 +14,7 @@ public class Processor {
         schedulerStrats.put("sjf", new ShortestJobFirst());
         schedulerStrats.put("preprior", new PremptivePriority());
         schedulerStrats.put("srtf", new ShortestRemainingTimeFirst());
+        schedulerStrats.put("rrp", new RoundRobinPriority());
 
 
 		//check for correct input
