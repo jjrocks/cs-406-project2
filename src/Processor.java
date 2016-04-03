@@ -30,7 +30,7 @@ public class Processor {
 		}
 
 		//get the appropriate scheduler
-		Scheduler sched = new ShortestRemainingTimeFirst(); //for now it's hardcoded as fcfs
+		Scheduler sched = new PremptivePriority(); //for now it's hardcoded as fcfs
  
 		//main program loop
 		int curTimestep=0;
