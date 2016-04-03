@@ -15,6 +15,8 @@ public class ShortestRemainingTimeFirst implements Scheduler {
 
     @Override
     public Process getProcessToRun() {
+        if (processQueue.isEmpty())
+            return null;
         if (processQueue.peek().remainingTime() == 0) {
             processQueue.poll();
         }
