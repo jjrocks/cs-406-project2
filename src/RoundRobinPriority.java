@@ -8,7 +8,7 @@ public class RoundRobinPriority implements Scheduler{
 
 
     static final int QUANTUM = 2;
-    final int priorityQuantumMultiplier = 2;
+    final double priorityQuantumMultiplier = 2;
 
     private Queue<Process> readyQueue;
     private Process currentlyRunningProcess;
