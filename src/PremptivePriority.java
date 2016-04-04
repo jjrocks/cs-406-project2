@@ -23,7 +23,7 @@ public class PremptivePriority implements Scheduler, Comparator<Process> {
 
     public Process getProcessToRun() {
 
-        //decide on the appropriate process to run (defaults to same process as last time, since no preemption)
+        //decide on the appropriate process to run (defaults to same process as last time)
         if (readyQueue.isEmpty()) {
             return null;
         }
